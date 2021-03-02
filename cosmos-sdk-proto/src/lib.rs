@@ -34,6 +34,13 @@ pub mod cosmos {
         }
     }
 
+    /// Bank operations
+    pub mod bank {
+        pub mod v1beta1 {
+            include!("prost/cosmos.bank.v1beta1.rs");
+        }
+    }
+
     /// Base functionality.
     pub mod base {
         /// Application BlockChain Interface (ABCI).
