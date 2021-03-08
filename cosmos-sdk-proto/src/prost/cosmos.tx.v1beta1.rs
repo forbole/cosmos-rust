@@ -1,3 +1,5 @@
+use serde::{Serialize, Deserialize};
+
 /// Tx is the standard type used for broadcasting transactions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tx {
@@ -167,7 +169,7 @@ pub mod mode_info {
 /// Fee includes the amount of coins paid in fees and the maximum
 /// gas to be used by the transaction. The ratio yields an effective "gasprice",
 /// which must be above some miminum to be accepted into the mempool.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Serialize, Deserialize, Clone, PartialEq, ::prost::Message)]
 pub struct Fee {
     /// amount is the amount of coins to be paid as a fee
     #[prost(message, repeated, tag = "1")]
