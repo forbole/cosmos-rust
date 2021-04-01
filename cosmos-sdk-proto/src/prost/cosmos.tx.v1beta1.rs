@@ -283,8 +283,6 @@ pub enum BroadcastMode {
     /// immediately.
     Async = 3,
 }
-#[cfg(feature = "grpc")]
-#[cfg_attr(docsrs, doc(cfg(feature = "grpc")))]
 #[doc = r" Generated client implementations."]
 pub mod service_client {
     #![allow(unused_variables, dead_code, missing_docs)]

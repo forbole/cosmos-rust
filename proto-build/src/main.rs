@@ -170,7 +170,7 @@ fn compile_proto_services(out_dir: impl AsRef<Path>) {
         .map(|p| p.as_os_str().to_os_string())
         .collect::<Vec<_>>();
 
-    // Compile all proto client for GRPC services
+    // Compile all proto client for GRPC/GRPC-web services
     println!("[info ] Compiling proto clients for GRPC services!");
     /*tonic_build::configure()
         .build_client(true)
@@ -244,8 +244,8 @@ fn copy_and_patch(src: impl AsRef<Path>, dest: impl AsRef<Path>) -> io::Result<(
         .replace_all(&contents, "tendermint_proto");
 
     // Patch each service definition with a feature attribute
-    let patched_contents =
-        contents.replace(TONIC_CLIENT_ATTRIBUTE, &GRPC_CLIENT_ATTRIBUTES.join("\n"));
+    //let patched_contents =
+    //    contents.replace(TONIC_CLIENT_ATTRIBUTE, &GRPC_CLIENT_ATTRIBUTES.join("\n"));
 
-    fs::write(dest, patched_contents)
+    fs::write(dest, contents.to_string())
 }
