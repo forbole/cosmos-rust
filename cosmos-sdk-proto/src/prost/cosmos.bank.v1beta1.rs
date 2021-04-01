@@ -151,125 +151,149 @@ pub struct QueryParamsResponse {
 #[doc = r" Generated client implementations."]
 pub mod query_client {
     #![allow(unused_variables, dead_code, missing_docs)]
-    use tonic::codegen::*;
-    #[doc = " Query defines the gRPC querier service."]
-    pub struct QueryClient<T> {
-        inner: tonic::client::Grpc<T>,
+    use base64;
+    use prost::Message;
+    pub struct Query {
+        host: String,
     }
-    impl QueryClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
-    impl<T> QueryClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
-        T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
-        }
+    impl Query {
         #[doc = " Balance queries the balance of a single coin for a single account."]
         pub async fn balance(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryBalanceRequest>,
-        ) -> Result<tonic::Response<super::QueryBalanceResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/cosmos.bank.v1beta1.Query/Balance");
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::QueryBalanceRequest,
+        ) -> Result<super::QueryBalanceResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.bank.v1beta1.Query/Balance"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QueryBalanceResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " AllBalances queries the balance of all coins for a single account."]
         pub async fn all_balances(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryAllBalancesRequest>,
-        ) -> Result<tonic::Response<super::QueryAllBalancesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/cosmos.bank.v1beta1.Query/AllBalances");
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::QueryAllBalancesRequest,
+        ) -> Result<super::QueryAllBalancesResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.bank.v1beta1.Query/AllBalances"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QueryAllBalancesResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " TotalSupply queries the total supply of all coins."]
         pub async fn total_supply(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryTotalSupplyRequest>,
-        ) -> Result<tonic::Response<super::QueryTotalSupplyResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/cosmos.bank.v1beta1.Query/TotalSupply");
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::QueryTotalSupplyRequest,
+        ) -> Result<super::QueryTotalSupplyResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.bank.v1beta1.Query/TotalSupply"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QueryTotalSupplyResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " SupplyOf queries the supply of a single coin."]
         pub async fn supply_of(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QuerySupplyOfRequest>,
-        ) -> Result<tonic::Response<super::QuerySupplyOfResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/cosmos.bank.v1beta1.Query/SupplyOf");
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::QuerySupplyOfRequest,
+        ) -> Result<super::QuerySupplyOfResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.bank.v1beta1.Query/SupplyOf"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QuerySupplyOfResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " Params queries the parameters of x/bank module."]
         pub async fn params(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryParamsRequest>,
-        ) -> Result<tonic::Response<super::QueryParamsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/cosmos.bank.v1beta1.Query/Params");
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::QueryParamsRequest,
+        ) -> Result<super::QueryParamsResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.bank.v1beta1.Query/Params"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QueryParamsResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
-    }
-    impl<T: Clone> Clone for QueryClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for QueryClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "QueryClient {{ ... }}")
+        pub fn new(host: String) -> Query {
+            Query { host }
         }
     }
 }
@@ -302,78 +326,65 @@ pub struct MsgMultiSendResponse {}
 #[doc = r" Generated client implementations."]
 pub mod msg_client {
     #![allow(unused_variables, dead_code, missing_docs)]
-    use tonic::codegen::*;
-    #[doc = " Msg defines the bank Msg service."]
-    pub struct MsgClient<T> {
-        inner: tonic::client::Grpc<T>,
+    use base64;
+    use prost::Message;
+    pub struct Msg {
+        host: String,
     }
-    impl MsgClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
-    impl<T> MsgClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
-        T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
-        }
+    impl Msg {
         #[doc = " Send defines a method for sending coins from one account to another account."]
         pub async fn send(
-            &mut self,
-            request: impl tonic::IntoRequest<super::MsgSend>,
-        ) -> Result<tonic::Response<super::MsgSendResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/cosmos.bank.v1beta1.Msg/Send");
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::MsgSend,
+        ) -> Result<super::MsgSendResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!("{}{}", &self.host, "/cosmos.bank.v1beta1.Msg/Send"))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::MsgSendResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " MultiSend defines a method for sending coins from some accounts to other accounts."]
         pub async fn multi_send(
-            &mut self,
-            request: impl tonic::IntoRequest<super::MsgMultiSend>,
-        ) -> Result<tonic::Response<super::MsgMultiSendResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/cosmos.bank.v1beta1.Msg/MultiSend");
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::MsgMultiSend,
+        ) -> Result<super::MsgMultiSendResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.bank.v1beta1.Msg/MultiSend"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::MsgMultiSendResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
-    }
-    impl<T: Clone> Clone for MsgClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for MsgClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "MsgClient {{ ... }}")
+        pub fn new(host: String) -> Msg {
+            Msg { host }
         }
     }
 }

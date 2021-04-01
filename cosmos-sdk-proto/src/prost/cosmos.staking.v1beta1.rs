@@ -507,289 +507,398 @@ pub struct QueryParamsResponse {
 #[doc = r" Generated client implementations."]
 pub mod query_client {
     #![allow(unused_variables, dead_code, missing_docs)]
-    use tonic::codegen::*;
-    #[doc = " Query defines the gRPC querier service."]
-    pub struct QueryClient<T> {
-        inner: tonic::client::Grpc<T>,
+    use base64;
+    use prost::Message;
+    pub struct Query {
+        host: String,
     }
-    impl QueryClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
-    impl<T> QueryClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
-        T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
-        }
+    impl Query {
         #[doc = " Validators queries all validators that match the given status."]
         pub async fn validators(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryValidatorsRequest>,
-        ) -> Result<tonic::Response<super::QueryValidatorsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/cosmos.staking.v1beta1.Query/Validators");
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::QueryValidatorsRequest,
+        ) -> Result<super::QueryValidatorsResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.staking.v1beta1.Query/Validators"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QueryValidatorsResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " Validator queries validator info for given validator address."]
         pub async fn validator(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryValidatorRequest>,
-        ) -> Result<tonic::Response<super::QueryValidatorResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/cosmos.staking.v1beta1.Query/Validator");
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::QueryValidatorRequest,
+        ) -> Result<super::QueryValidatorResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.staking.v1beta1.Query/Validator"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QueryValidatorResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " ValidatorDelegations queries delegate info for given validator."]
         pub async fn validator_delegations(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryValidatorDelegationsRequest>,
-        ) -> Result<tonic::Response<super::QueryValidatorDelegationsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/cosmos.staking.v1beta1.Query/ValidatorDelegations",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::QueryValidatorDelegationsRequest,
+        ) -> Result<super::QueryValidatorDelegationsResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.staking.v1beta1.Query/ValidatorDelegations"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QueryValidatorDelegationsResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " ValidatorUnbondingDelegations queries unbonding delegations of a validator."]
         pub async fn validator_unbonding_delegations(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryValidatorUnbondingDelegationsRequest>,
-        ) -> Result<tonic::Response<super::QueryValidatorUnbondingDelegationsResponse>, tonic::Status>
+            &self,
+            request: super::QueryValidatorUnbondingDelegationsRequest,
+        ) -> Result<super::QueryValidatorUnbondingDelegationsResponse, Box<dyn std::error::Error>>
         {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/cosmos.staking.v1beta1.Query/ValidatorUnbondingDelegations",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.staking.v1beta1.Query/ValidatorUnbondingDelegations"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QueryValidatorUnbondingDelegationsResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " Delegation queries delegate info for given validator delegator pair."]
         pub async fn delegation(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryDelegationRequest>,
-        ) -> Result<tonic::Response<super::QueryDelegationResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/cosmos.staking.v1beta1.Query/Delegation");
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::QueryDelegationRequest,
+        ) -> Result<super::QueryDelegationResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.staking.v1beta1.Query/Delegation"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QueryDelegationResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " UnbondingDelegation queries unbonding info for given validator delegator"]
         #[doc = " pair."]
         pub async fn unbonding_delegation(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryUnbondingDelegationRequest>,
-        ) -> Result<tonic::Response<super::QueryUnbondingDelegationResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/cosmos.staking.v1beta1.Query/UnbondingDelegation",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::QueryUnbondingDelegationRequest,
+        ) -> Result<super::QueryUnbondingDelegationResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.staking.v1beta1.Query/UnbondingDelegation"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QueryUnbondingDelegationResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " DelegatorDelegations queries all delegations of a given delegator address."]
         pub async fn delegator_delegations(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryDelegatorDelegationsRequest>,
-        ) -> Result<tonic::Response<super::QueryDelegatorDelegationsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/cosmos.staking.v1beta1.Query/DelegatorDelegations",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::QueryDelegatorDelegationsRequest,
+        ) -> Result<super::QueryDelegatorDelegationsResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.staking.v1beta1.Query/DelegatorDelegations"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QueryDelegatorDelegationsResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " DelegatorUnbondingDelegations queries all unbonding delegations of a given"]
         #[doc = " delegator address."]
         pub async fn delegator_unbonding_delegations(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryDelegatorUnbondingDelegationsRequest>,
-        ) -> Result<tonic::Response<super::QueryDelegatorUnbondingDelegationsResponse>, tonic::Status>
+            &self,
+            request: super::QueryDelegatorUnbondingDelegationsRequest,
+        ) -> Result<super::QueryDelegatorUnbondingDelegationsResponse, Box<dyn std::error::Error>>
         {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/cosmos.staking.v1beta1.Query/DelegatorUnbondingDelegations",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.staking.v1beta1.Query/DelegatorUnbondingDelegations"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QueryDelegatorUnbondingDelegationsResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " Redelegations queries redelegations of given address."]
         pub async fn redelegations(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryRedelegationsRequest>,
-        ) -> Result<tonic::Response<super::QueryRedelegationsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/cosmos.staking.v1beta1.Query/Redelegations");
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::QueryRedelegationsRequest,
+        ) -> Result<super::QueryRedelegationsResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.staking.v1beta1.Query/Redelegations"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QueryRedelegationsResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " DelegatorValidators queries all validators info for given delegator"]
         #[doc = " address."]
         pub async fn delegator_validators(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryDelegatorValidatorsRequest>,
-        ) -> Result<tonic::Response<super::QueryDelegatorValidatorsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/cosmos.staking.v1beta1.Query/DelegatorValidators",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::QueryDelegatorValidatorsRequest,
+        ) -> Result<super::QueryDelegatorValidatorsResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.staking.v1beta1.Query/DelegatorValidators"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QueryDelegatorValidatorsResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " DelegatorValidator queries validator info for given delegator validator"]
         #[doc = " pair."]
         pub async fn delegator_validator(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryDelegatorValidatorRequest>,
-        ) -> Result<tonic::Response<super::QueryDelegatorValidatorResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/cosmos.staking.v1beta1.Query/DelegatorValidator",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::QueryDelegatorValidatorRequest,
+        ) -> Result<super::QueryDelegatorValidatorResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.staking.v1beta1.Query/DelegatorValidator"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QueryDelegatorValidatorResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " HistoricalInfo queries the historical info for given height."]
         pub async fn historical_info(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryHistoricalInfoRequest>,
-        ) -> Result<tonic::Response<super::QueryHistoricalInfoResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/cosmos.staking.v1beta1.Query/HistoricalInfo",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::QueryHistoricalInfoRequest,
+        ) -> Result<super::QueryHistoricalInfoResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.staking.v1beta1.Query/HistoricalInfo"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QueryHistoricalInfoResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " Pool queries the pool info."]
         pub async fn pool(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryPoolRequest>,
-        ) -> Result<tonic::Response<super::QueryPoolResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/cosmos.staking.v1beta1.Query/Pool");
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::QueryPoolRequest,
+        ) -> Result<super::QueryPoolResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.staking.v1beta1.Query/Pool"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QueryPoolResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " Parameters queries the staking parameters."]
         pub async fn params(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryParamsRequest>,
-        ) -> Result<tonic::Response<super::QueryParamsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/cosmos.staking.v1beta1.Query/Params");
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::QueryParamsRequest,
+        ) -> Result<super::QueryParamsResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.staking.v1beta1.Query/Params"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::QueryParamsResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
-    }
-    impl<T: Clone> Clone for QueryClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for QueryClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "QueryClient {{ ... }}")
+        pub fn new(host: String) -> Query {
+            Query { host }
         }
     }
 }

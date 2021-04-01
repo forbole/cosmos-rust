@@ -1,5 +1,3 @@
-use serde::{Serialize, Deserialize};
-
 /// Tx is the standard type used for broadcasting transactions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tx {
@@ -169,7 +167,7 @@ pub mod mode_info {
 /// Fee includes the amount of coins paid in fees and the maximum
 /// gas to be used by the transaction. The ratio yields an effective "gasprice",
 /// which must be above some miminum to be accepted into the mempool.
-#[derive(Serialize, Deserialize, Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Fee {
     /// amount is the amount of coins to be paid as a fee
     #[prost(message, repeated, tag = "1")]
@@ -290,110 +288,122 @@ pub enum BroadcastMode {
 #[doc = r" Generated client implementations."]
 pub mod service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
-    use tonic::codegen::*;
-    #[doc = " Service defines a gRPC service for interacting with transactions."]
-    pub struct ServiceClient<T> {
-        inner: tonic::client::Grpc<T>,
+    use base64;
+    use prost::Message;
+    pub struct Service {
+        host: String,
     }
-    impl ServiceClient<tonic::transport::Channel> {
-        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: std::convert::TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
-    impl<T> ServiceClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
-        T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
-        }
+    impl Service {
         #[doc = " Simulate simulates executing a transaction for estimating gas usage."]
         pub async fn simulate(
-            &mut self,
-            request: impl tonic::IntoRequest<super::SimulateRequest>,
-        ) -> Result<tonic::Response<super::SimulateResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/cosmos.tx.v1beta1.Service/Simulate");
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::SimulateRequest,
+        ) -> Result<super::SimulateResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.tx.v1beta1.Service/Simulate"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::SimulateResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " GetTx fetches a tx by hash."]
         pub async fn get_tx(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetTxRequest>,
-        ) -> Result<tonic::Response<super::GetTxResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/cosmos.tx.v1beta1.Service/GetTx");
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::GetTxRequest,
+        ) -> Result<super::GetTxResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.tx.v1beta1.Service/GetTx"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::GetTxResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " BroadcastTx broadcast transaction."]
         pub async fn broadcast_tx(
-            &mut self,
-            request: impl tonic::IntoRequest<super::BroadcastTxRequest>,
-        ) -> Result<tonic::Response<super::BroadcastTxResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/cosmos.tx.v1beta1.Service/BroadcastTx");
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::BroadcastTxRequest,
+        ) -> Result<super::BroadcastTxResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.tx.v1beta1.Service/BroadcastTx"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::BroadcastTxResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
         #[doc = " GetTxsEvent fetches txs by event."]
         pub async fn get_txs_event(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetTxsEventRequest>,
-        ) -> Result<tonic::Response<super::GetTxsEventResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/cosmos.tx.v1beta1.Service/GetTxsEvent");
-            self.inner.unary(request.into_request(), path, codec).await
+            &self,
+            request: super::GetTxsEventRequest,
+        ) -> Result<super::GetTxsEventResponse, Box<dyn std::error::Error>> {
+            let mut proto_buffer: Vec<u8> = Vec::new();
+            request.encode(&mut proto_buffer).unwrap();
+            let mut frame: Vec<u8> = Vec::new();
+            frame.push(0 as u8);
+            frame.append(&mut (proto_buffer.len() as u32).to_be_bytes().to_vec());
+            frame.append(&mut proto_buffer);
+            let base64 = base64::encode(frame);
+            let client = reqwest::Client::new();
+            let resp = client
+                .post(format!(
+                    "{}{}",
+                    &self.host, "/cosmos.tx.v1beta1.Service/GetTxsEvent"
+                ))
+                .body(base64)
+                .send()
+                .await?
+                .text()
+                .await?;
+            let buffer = base64::decode(resp)?;
+            let s = super::GetTxsEventResponse::decode(&buffer[5..])?;
+            Ok(s)
         }
-    }
-    impl<T: Clone> Clone for ServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for ServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "ServiceClient {{ ... }}")
+        pub fn new(host: String) -> Service {
+            Service { host }
         }
     }
 }
