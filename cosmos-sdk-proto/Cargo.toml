@@ -14,9 +14,6 @@ readme     = "README.md"
 categories = ["cryptography", "cryptography::cryptocurrencies", "database"]
 keywords   = ["blockchain", "cosmos", "tendermint", "proto"]
 
-[lib]
-crate-type = ["cdylib"]
-
 [dependencies]
 prost = "0.7"
 prost-types = "0.7"
