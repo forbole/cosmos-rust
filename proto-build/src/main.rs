@@ -172,14 +172,21 @@ fn compile_proto_services(out_dir: impl AsRef<Path>) {
 
     // Compile all proto client for GRPC services
     println!("[info ] Compiling proto clients for GRPC services!");
-    tonic_build::configure()
+    /*tonic_build::configure()
         .build_client(true)
         .build_server(false)
         .format(true)
         .out_dir(out_dir)
         .compile(&services, &includes)
         .unwrap();
-
+    */
+    rust_grpc_web::configure()
+        .build_client(true)
+        .build_server(false)
+        .format(true)
+        .out_dir(out_dir)
+        .compile(&services, &includes)
+        .unwrap();
     println!("[info ] => Done!");
 }
 
